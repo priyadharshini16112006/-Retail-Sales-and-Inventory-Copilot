@@ -1,0 +1,17 @@
+FastAPI==0.109.2
+uvicorn==0.27.1
+SQLAlchemy==2.0.25
+pandas==2.2.0
+numpy==1.26.3
+pydantic==2.6.1
+python-dotenv==1.0.1
+<<<<<<< HEAD
+google-genai
+jinja2==3.1.3
+passlib[bcrypt]
+itsdangerous
+python-multipart
+=======
+google-genai==0.3.0
+jinja2==3.1.3
+>>>>>>> bf70ac32d91e8850dc843ac0f56b5c14d63475ea

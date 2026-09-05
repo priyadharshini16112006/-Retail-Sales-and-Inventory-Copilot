@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockPilot AI - Login</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/auth.css">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <div class="auth-logo-icon">📦</div>
+                <h1>StockPilot AI</h1>
+                <p>Retail Intelligence Copilot</p>
+            </div>
+
+            <h2 class="auth-title">Welcome back</h2>
+            <p class="auth-subtitle">Sign in to your account to continue</p>
+
+            {% if error %}
+            <div class="auth-alert auth-alert-error">{{ error }}</div>
+            {% endif %}
+
+            {% if success %}
+            <div class="auth-alert auth-alert-success">{{ success }}</div>
+            {% endif %}
+
+            <form method="POST" action="/auth/login" id="loginForm">
+                <div class="auth-form-group">
+                    <label for="email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="you@example.com" 
+                        required 
+                        autocomplete="email"
+                    >
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="password">Password</label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="Enter your password" 
+                            required 
+                            autocomplete="current-password"
+                        >
+                        <button type="button" class="toggle-password" onclick="togglePassword('password', this)">👁</button>
+                    </div>
+                </div>
+
+                <div class="auth-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="remember" value="1">
+                        <span>Remember me</span>
+                    </label>
+                    <button type="button" class="link-btn" onclick="showForgotPassword()">Forgot Password?</button>
+                </div>
+
+                <button type="submit" class="auth-btn">Sign In</button>
+            </form>
+
+            <div id="forgotMsg" class="auth-alert auth-alert-info" style="display:none; margin-top:15px;">
+                Password reset is not configured. Please contact the application administrator.
+            </div>
+
+            <p class="auth-switch">
+                Don't have an account? 
+                <a href="/register" class="auth-link">Create Account</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(id, btn) {
+            const input = document.getElementById(id);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁';
+            }
+        }
+
+        function showForgotPassword() {
+            const msg = document.getElementById('forgotMsg');
+            msg.style.display = msg.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

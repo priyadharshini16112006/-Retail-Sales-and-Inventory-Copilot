@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockPilot AI - Create Account</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/auth.css">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <div class="auth-logo-icon">📦</div>
+                <h1>StockPilot AI</h1>
+                <p>Retail Intelligence Copilot</p>
+            </div>
+
+            <h2 class="auth-title">Create your account</h2>
+            <p class="auth-subtitle">Join StockPilot AI to manage your retail intelligence</p>
+
+            {% if error %}
+            <div class="auth-alert auth-alert-error">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST" action="/auth/register" id="registerForm" onsubmit="return validateForm()">
+                <div class="auth-form-group">
+                    <label for="full_name">Full Name</label>
+                    <input 
+                        type="text" 
+                        id="full_name" 
+                        name="full_name" 
+                        placeholder="Enter your full name" 
+                        required 
+                        autocomplete="name"
+                    >
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="you@example.com" 
+                        required 
+                        autocomplete="email"
+                    >
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="password">Password</label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="At least 8 characters" 
+                            required 
+                            minlength="8"
+                            autocomplete="new-password"
+                        >
+                        <button type="button" class="toggle-password" onclick="togglePassword('password', this)">👁</button>
+                    </div>
+                    <div class="password-strength" id="strengthBar"></div>
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="confirm_password" 
+                            name="confirm_password" 
+                            placeholder="Re-enter your password" 
+                            required 
+                            autocomplete="new-password"
+                        >
+                        <button type="button" class="toggle-password" onclick="togglePassword('confirm_password', this)">👁</button>
+                    </div>
+                    <div id="matchMsg" class="field-msg"></div>
+                </div>
+
+                <button type="submit" class="auth-btn">Create Account</button>
+            </form>
+
+            <p class="auth-switch">
+                Already have an account? 
+                <a href="/login" class="auth-link">Sign In</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(id, btn) {
+            const input = document.getElementById(id);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁';
+            }
+        }
+
+        // Live password strength
+        document.getElementById('password').addEventListener('input', function() {
+            const bar = document.getElementById('strengthBar');
+            const val = this.value;
+            let strength = 0;
+            if (val.length >= 8) strength++;
+            if (/[A-Z]/.test(val)) strength++;
+            if (/[0-9]/.test(val)) strength++;
+            if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+            const colors = ['', '#ef4444', '#f59e0b', '#10b981', '#3b82f6'];
+            const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+            bar.style.width = `${strength * 25}%`;
+            bar.style.background = colors[strength] || 'transparent';
+            bar.title = labels[strength] || '';
+        });
+
+        // Live confirm match
+        document.getElementById('confirm_password').addEventListener('input', function() {
+            const msg = document.getElementById('matchMsg');
+            if (this.value === document.getElementById('password').value) {
+                msg.textContent = '✓ Passwords match';
+                msg.style.color = 'var(--success)';
+            } else {
+                msg.textContent = '✗ Passwords do not match';
+                msg.style.color = 'var(--critical)';
+            }
+        });
+
+        function validateForm() {
+            const pw = document.getElementById('password').value;
+            const cpw = document.getElementById('confirm_password').value;
+            if (pw !== cpw) {
+                alert('Passwords do not match.');
+                return false;
+            }
+            if (pw.length < 8) {
+                alert('Password must be at least 8 characters.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
